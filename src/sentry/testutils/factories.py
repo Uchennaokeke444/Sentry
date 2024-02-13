@@ -1330,7 +1330,7 @@ class Factories:
     def create_userreport(project, event_id=None, **kwargs):
         event = Factories.store_event(
             data={
-                "timestamp": iso_format(datetime.utcnow()),
+                "timestamp": iso_format(datetime.now(timezone.utc)),
                 "event_id": event_id or "a" * 32,
                 "message": "testing",
             },

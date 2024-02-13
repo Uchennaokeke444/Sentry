@@ -5,7 +5,7 @@ from collections import deque
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from types import TracebackType
 
 from sentry_sdk.tracing import Span
@@ -23,9 +23,9 @@ class RpcMetricRecord:
     @contextmanager
     def measure(cls, service_name: str, method_name: str) -> Generator[None, None, None]:
         """Measure an RPC and capture the result in any open spans."""
-        start = datetime.utcnow()
+        start = datetime.now(timezone.utc)
         yield
-        end = datetime.utcnow()
+        end = datetime.now(timezone.utc)
         record = cls(service_name, method_name, duration=end - start)
         RpcMetricTracker.get_local().save_record(record)
 

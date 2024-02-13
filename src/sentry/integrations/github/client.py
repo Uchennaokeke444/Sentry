@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Mapping, Sequence
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, cast
 
 import sentry_sdk
@@ -131,7 +131,7 @@ class GithubProxyClient(IntegrationProxyClient):
             return jwt
 
         # The rest should use access tokens...
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         access_token: str | None = self.integration.metadata.get("access_token")
         expires_at: str | None = self.integration.metadata.get("expires_at")
         is_expired = (
